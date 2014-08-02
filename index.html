@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+
+    <title>2D/3D map</title>
+    <link rel="stylesheet" href="style.css"/>
+
+
+
+</head>
+<body ng-app="mapSetup">
+    <div id="container" ng-controller="mapController">
+      <textarea ng-model="jsonInput"></textarea><br>
+      <label>Number of Players</label>
+      <input ng-model="numberOfPlayers" type="number" min="2" max="6" /><br>
+      <label>Stars per Player</label>
+      <input ng-model="nodesPerPlayer" type="number" min="13" max="17" /><br>
+      <button ng-click="generate()">Generate Map</button><br>
+      <button ng-click='outputJson()'>Output Map</button><br>
+      <button ng-click='clearDisplay()'>Clear Display</button>
+  </div>
+    <script src="components/d3/d3.min.js"></script>
+    <script src="components/jquery/dist/jquery.min.js"></script>
+    <script src="components/angular/angular.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+</html>

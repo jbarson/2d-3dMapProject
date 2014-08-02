@@ -1,0 +1,12 @@
+.node {
+    stroke: #555;
+    stroke-width: 1.5px;
+}
+.sysname {
+    fill:black;
+}
+
+.link {
+    stroke: #abc;
+    stroke-opacity: .6;
+}
