@@ -1,7 +1,7 @@
 /**
  * Created by Jon on 2014-08-02.
  */
-var app= angular.module('mapSetup',[]);
+var app = angular.module('mapSetup',[]);
 app.controller('mapController',['$scope',function($scope){
   // a snippit that returns an array of objects describing a node map suitable for a wargaming campaign map.
   var myMap=[];
@@ -41,7 +41,6 @@ app.controller('mapController',['$scope',function($scope){
     init();
 
   };
-  //console.log(angular.element('#container'))
 //System is a constructor function for the System objects.
   function System(id, name, brown, green, yellow, linkNo){
     this.id = id;  //A unique id given to this system, it will normally correspond with the system's index in the map array.
@@ -52,12 +51,6 @@ app.controller('mapController',['$scope',function($scope){
     this.linkNo = linkNo; //what is the maximum number of links this system can support
     this.links = []; //an array holding all the links.
   }
-
-//doesn't do much yet
-  System.prototype.display = function(){
-    alert("System " + this.id + ": " + this.name);
-    return this;
-  };
 
 //connects systems together
   function defineLinks(thisMap){
@@ -79,7 +72,6 @@ app.controller('mapController',['$scope',function($scope){
       }
     }
     //lets look for stars with only 2 links
-    var target;
 
     for (var  j in thisMap){
       if (thisMap[j].links.length===2){
@@ -142,8 +134,8 @@ app.controller('mapController',['$scope',function($scope){
 
   var init=function(){
     //angular.element('svg').remove();
-    var width = 960,
-      height = 500;
+    var width = 1200,
+      height = 750;
 
     var color = d3.scale.category20();
 
