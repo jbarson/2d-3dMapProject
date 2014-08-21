@@ -1,27 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="spacemap">
 <head>
-    <meta charset="UTF-8">
-    <title>2D/3D map</title>
-    <link rel="stylesheet" href="style.css"/>
+  <meta charset="utf-8">
+  <title>Star Map</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" media="screen" >
+  <link rel="stylesheet" href="bower_components/ngModal/dist/ng-modal.css" media="screen">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body ng-app="mapSetup">
-    <div id="container" ng-controller="mapController">
-      <textarea ng-model="jsonInput"></textarea><br>
-      <label>Number of Players</label>
-      <input ng-model="numberOfPlayers" type="number" min="2" max="6" /><br>
-      <label>Stars per Player</label>
-      <input ng-model="nodesPerPlayer" type="number" min="13" max="17" /><br>
-      <button ng-click="generate()">Generate Map</button><br>
-      <button ng-click='outputJson()'>Output Map</button><br>
-      <button ng-click='clearDisplay()'>Clear Display</button>
-  </div>
-    <script src="components/d3/d3.min.js"></script>
-    <script src="components/jquery/dist/jquery.min.js"></script>
-    <script src="components/threejs/build/three.min.js"></script>
-    <script src="components/threejs-controls/controls/TrackballControls.js"></script>
-    <script src="components/angular/angular.min.js"></script>
-    <script src="app.js"></script>
+  <body>
+    <!--<div class="form-signin" ng-controller="loginController">-->
+      <!--<h3 class="form-signin-heading" ng-if="currentUser">{{currentUser.email}}</h3>-->
+      <!--<input ng-show ="!currentUser" ng-model="newUser.email" type="email" class="form-control" placeholder="Email address" >-->
+      <!--<input ng-show ="!currentUser" ng-model="newUser.password" type="password" class="form-control" placeholder="Password">-->
+      <!--<button ng-show ="!currentUser" ng-click="login(newUser.email, newUser.password)" class="btn btn-lg btn-primary btn-block">Login</button>-->
+      <!--&lt;!&ndash; <button ng-click="register(newUser.email, newUser.password)" class="btn btn-lg btn-success btn-block">Register</button> &ndash;&gt;-->
+      <!--<button ng-show ="currentUser" ng-click="logout()" class="btn btn-danger btn-block">Logout</button>-->
+    <!--</div>-->
+    <div class="container" ng-controller="mapController as map">
+    <div class="legend">
+      <h4>Link Legend</h4>
+      <textarea name="Name" rows="8" cols="40" placeholder="enter JSON here" ng-model="jsonInput"></textarea>
+      <br>
+      <button class="btn" ng-class="{disabled:!jsonInput}" ng-click="displayMap()">Display Map</button>
+      <!--<button class="btn" ng-class="{disabled:!jsonInput}" ng-click="displayUploadDialog()" >Upload Map</button>-->
+      <div ng-show="jsonInput">
+      <input type="text" placeholder="Map Name" ng-model="mapName"/>
+        <button ng-click=uploadMap() class="btn btn-primary btn-xs" ng-class="{disabled:!mapName}">Upload</button>
+      </div>
+      <!--<modal-dialog show='displayModal' dialog-title='Upload Map to Database'>-->
+        <!--<input type="text" ng-model="mapName" placeholder="Name of map" required>-->
+        <!--&lt;!&ndash;<input type="text" ng-model="authorName" placeholder="Author" required>&ndash;&gt;-->
+        <!--<button ng-click=uploadMap() class="btn btn-primary btn-xs">Upload</button>-->
+      <!--</modal-dialog>-->
+      <ul class="unstyled">
+        <li ng-repeat="link in linkTypes" ng-class="link.type" ng-show="totalLink(link.type)>0">
+          {{link.text +" "+ totalLink(link.type) +" "+(totalLink(link.type)/sumOfAllLinks()*100||0).toFixed(2)}}%
+            <label class="text" for="toggleLinkControl">Toggle Link</label><input type="checkbox" id="toggleLinkControl"  ng-click="toggleLink(link.type)">
+        </li>
+      </ul>
+        <ul class="list-unstyled">
+            <li ng-repeat="map in dbList"><button class="btn btn-default btn-xs" ng-click="displayDBEntry(map)">Display</button>{{map.name}}</li>
+        </ul>
+    </div>
+    <tabset>
+      <tab heading="2D map">
+        <div id="2Dmap" class="map">
+            <svg ng-attr-width="{{map.width}}" ng-attr-height="{{map.height}}">
+                 <g ng-repeat="node in nodes">
+                   <!-- repeat through all the nodes and draw all the links first -->
+                   <star-link ng-repeat="link in node.links"></star-link>
+                 </g>
+                 <!-- now we create the systems so that they appear on top of the links -->
+                 <star-system ng-repeat="node in nodes"></star-system>
+            </svg>
 
-</body>
+        </div>
+      </tab>
+      <tab heading="3D map" select="displayMap()">
+            <div id="3Dmap" class="map">
+            </div>
+      </tab>
+  	</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.13/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+    <!--<script src="bower_components/ui-bootstrap/src/tabs/tabs.js"></script>-->
+    <script src="bower_components/ui-bootstrap/src/buttons/buttons.js"></script>
+    <script src="bower_components/ngModal/dist/ng-modal.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
+    <script src='https://cdn.firebase.com/js/simple-login/1.6.1/firebase-simple-login.js'></script>
+    <script src="js/three.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/CSS3DRenderer.js"></script>
+    <script src="js/TrackballControls.js"></script>
+    </script>
+
+    <script src="app.js"></script>
+  </body>
 </html>

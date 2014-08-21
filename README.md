@@ -1,4 +1,4 @@
-2d-3dMapProject
-===============
+D3test
+======
 
-a map viewer for ad astra games
+D3Test-Starmap

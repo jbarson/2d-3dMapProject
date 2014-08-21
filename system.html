@@ -1,0 +1,9 @@
+<g class="reset node"
+   ng-attr-transform="translate({{node.x +600}},{{node.y +600}})">
+    <polygon class="{{'spike'+node.links.length}}"
+             transform="scale(0.75)"
+             ng-attr-points="{{spikes(node.links.length)}}"
+             ng-attr-fill="#fff">
+    </polygon>
+    <text ng-attr-dx="{{-2.5*node.name.length}}" dy="25">{{node.name}}</text>
+</g>
